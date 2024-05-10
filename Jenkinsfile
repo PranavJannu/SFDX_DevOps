@@ -20,10 +20,16 @@ node {
     stage('Read Files') {
         def packageXmlContent = readFile 'manifest/package.xml'
         echo "Package.xml content: ${packageXmlContent.trim()}" //Disply files present under package.xml
-
-        def forceappContent = readFile 'force-app/main/default/classes'
-        echo "Package.xml content: ${forceappContent.trim()}" //Disply Class present under force-app/main/default
-        
         echo "Reading package.xml file"
+
+         // Get the list of files in the classes directory
+        def classesDir = 'force-app/main/default/classes'
+        def classesFiles = findFiles(glob: "${classesDir}/**/*.cls").collect { it.path }
+
+        // Output the files present in the classes directory
+        echo "Files in ${classesDir}:"
+        classesFiles.each { fileName ->
+            echo fileName
+        }
     }
 }
