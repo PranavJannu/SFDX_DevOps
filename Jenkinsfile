@@ -21,8 +21,8 @@ node {
         def packageXmlContent = readFile 'manifest/package.xml'
         echo "Package.xml content: ${packageXmlContent.trim()}" //Disply files present under package.xml
 
-        def force-appContent = readFile 'force-app/main/default/classes'
-        echo "Package.xml content: ${force-appContent.trim()}" //Disply Class present under force-app/main/default
+        def forceappContent = readFile 'force-app/main/default/classes'
+        echo "Package.xml content: ${forceappContent.trim()}" //Disply Class present under force-app/main/default
         
         echo "Reading package.xml file"
     }
