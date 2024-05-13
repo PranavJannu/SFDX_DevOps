@@ -22,12 +22,6 @@ node {
         echo "Package.xml content: ${packageXmlContent.trim()}" //Disply files present under package.xml
         echo "Reading package.xml file"
 
-        // Debug output for packageClasses
-        echo "Extracted class names from package.xml:"
-        packageClasses.each { className ->
-            echo className
-        }
-
         // Get the list of files in the classes directory
         def classesDir = 'force-app/main/default/classes'
         def classesFiles = findFiles(glob: "${classesDir}/**/*.cls").collect { it.path }
@@ -36,6 +30,12 @@ node {
         echo "Files in ${classesDir}:"
         classesFiles.each { fileName ->
             echo fileName
+        }
+
+        // Debug output for packageClasses
+        echo "Extracted class names from package.xml:"
+        packageClasses.each { className ->
+            echo className
         }
 
         // Debug output for classesFiles
