@@ -18,31 +18,10 @@ node {
     }
 
     stage('Read Files') {
+        // Get the content of package.xml
         def packageXmlContent = readFile 'manifest/package.xml'
         echo "Package.xml content: ${packageXmlContent.trim()}" //Disply files present under package.xml
         echo "Reading package.xml file"
-
-        // Get the list of files in the classes directory
-        def classesDir = 'force-app/main/default/classes'
-        def classesFiles = findFiles(glob: "${classesDir}/**/*.cls").collect { it.path }
-        echo "Files under Class -> ${classesFiles}"
-        // Output the files present in the classes directory
-        echo "Files in ${classesDir}:"
-        classesFiles.each { fileName ->
-            echo fileName
-        }
-
-        // Debug output for packageClasses
-        echo "Extracted class names from package.xml:"
-        packageClasses.each { className ->
-            echo className
-        }
-
-        // Debug output for classesFiles
-        echo "Files in ${classesDir}:"
-        classesFiles.each { fileName ->
-            echo fileName
-        }
 
 
         // Extract class names from package.xml, excluding wildcard entries
@@ -52,6 +31,25 @@ node {
             line.replaceAll(/<members>|<\/members>/, '').trim()
         }
 
+        // Debug output for packageClasses
+        echo "Extracted class names from package.xml:"
+        packageClasses.each { className ->
+            echo className
+        }
+
+        // Get the list of files in the classes directory
+        def classesDir = 'force-app/main/default/classes'
+        def classesFiles = findFiles(glob: "${classesDir}/**/*.cls").collect { it.path }
+        echo "Files under Class -> ${classesFiles}"
+
+
+
+        // Debug output for classesFiles
+        echo "Files in ${classesDir}:"
+        classesFiles.each { fileName ->
+            echo fileName
+        }
+
         echo "Extracted class names from package.xml:"
         packageClasses.each { className ->
             echo className
@@ -59,16 +57,17 @@ node {
 
         // Validate class names
         def missingClasses = packageClasses.findAll { className ->
-            !classesFiles.any{fileName ->
-            fileName.endsWith("${className}.cls")}
+            !classesFiles.any{ it.endsWith("/$className")}
         }
 
+        //Check if there are any missing classes    
         if (missingClasses) {
+            //print Missing Classes
             echo "Missing classes in package.xml:"
-            missingClasses.each { echo it }
+            missingClasses.each { missingClass -> echo missingClass }
             error "Validation failed: Some classes are missing in package.xml"
-        } else {
-            echo "All classes are present in package.xml"
-        }
+        } 
+        // Throw an error if there are missing classes
+            error("Validation failed: Some classes are missing in package.xml")
     }
 }
