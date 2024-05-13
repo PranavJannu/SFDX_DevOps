@@ -25,7 +25,7 @@ node {
         // Get the list of files in the classes directory
         def classesDir = 'force-app/main/default/classes'
         def classesFiles = findFiles(glob: "${classesDir}/**/*.cls").collect { it.path }
-        echo "Files under Class -> "{classesFiles}
+        echo "Files under Class -> ${classesFiles}"
         // Output the files present in the classes directory
         echo "Files in ${classesDir}:"
         classesFiles.each { fileName ->
