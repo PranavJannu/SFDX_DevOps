@@ -31,5 +31,34 @@ node {
         classesFiles.each { fileName ->
             echo fileName
         }
+
+        // Extract class names from package.xml, excluding wildcard entries
+        def packageClasses = packageXmlContent.readLines().findAll { line ->
+            line.contains('<members>') && line.contains('</members>') && !line.contains('<members>*</members>')
+        }.collect { line ->
+            line.replaceAll(/<members>|<\/members>/, '').trim()
+        }
+
+        echo "Extracted class names from package.xml:"
+        packageClasses.each { className ->
+            echo className
+        }
+
+        // Convert class names and file names to lowercase for case-insensitive comparison
+        def lowercasePackageClasses = packageClasses.collect { it.toLowerCase() }
+        def lowercaseClassesFiles = classesFiles.collect { it.toLowerCase() }
+
+        // Validate class names
+        def missingClasses = packageClasses.findAll { className ->
+            !classesFiles.any { it.endsWith("/${className}.cls") }
+        }
+
+        if (missingClasses) {
+            echo "Missing classes in package.xml:"
+            missingClasses.each { echo it }
+            error "Validation failed: Some classes are missing in package.xml"
+        } else {
+            echo "All classes are present in package.xml"
+        }
     }
 }
