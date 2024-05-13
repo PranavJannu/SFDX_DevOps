@@ -44,7 +44,17 @@ node {
             echo className
         }
 
+        // Validate class names
+        def missingClasses = packageClasses.findAll { className ->
+            !classesFiles.any { it.endsWith("/${className}.cls") }
+        }
 
-
+        if (missingClasses) {
+            echo "Missing classes in package.xml:"
+            missingClasses.each { echo it }
+            error "Validation failed: Some classes are missing in package.xml"
+        } else {
+            echo "All classes are present in package.xml"
+        }
     }
 }
