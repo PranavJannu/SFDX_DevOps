@@ -31,5 +31,18 @@ node {
         classesFiles.each { fileName ->
             echo fileName
         }
+
+        // Extract class names from package.xml, excluding wildcard entries
+        def packageClasses = packageXmlContent.readLines().findAll { line ->
+            line.contains('<members>') && line.contains('</members>') && !line.contains('<members>*</members>')
+        }.collect { line ->
+            line.replaceAll(/<members>|<\/members>/, '').trim()
+        }
+
+        echo "Extracted class names from package.xml:"
+        packageClasses.each { className ->
+            echo className
+        }
+
     }
 }
