@@ -50,7 +50,7 @@ node {
 
     // Validate class names
         def missingClasses = packageClasses.findAll { className ->
-            !classesFiles.any { it.endsWith("/${className}.cls") }
+            !fileExists("force-app/main/default/classes/${className}.cls")
         }
 
         if (missingClasses) {
