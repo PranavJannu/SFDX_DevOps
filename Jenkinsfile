@@ -46,7 +46,7 @@ node {
 
         // Validate class names
         def missingClasses = packageClasses.findAll { className ->
-            !classesFiles.any { it.endsWith("/${className}.cls") }
+            !classesFiles.contains(className)
         }
 
         if (missingClasses) {
