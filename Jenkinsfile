@@ -22,13 +22,14 @@ node {
         echo "Package.xml content: ${packageXmlContent.trim()}" //Disply files present under package.xml
         echo "Reading package.xml file"
 
-       def files = bat(
-            script: "dir force-app/main/default/classes",
-            returnStdout: true
-            ).trim().split('\n')
-            for (def file in files) {
-                def content = readFile(file)
-                // Process content as needed
+        // Get the list of files in the classes directory
+        def classesDir = 'force-app/main/default/classes'
+        def classesFiles = findFiles(glob: "${classesDir}/**/*.cls").collect { it.path }
+
+        // Output the files present in the classes directory
+        echo "Files in ${classesDir}:"
+        classesFiles.each { fileName ->
+            echo fileName
         }
     }
 }
