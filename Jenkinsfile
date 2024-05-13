@@ -23,7 +23,7 @@ node {
         echo "Reading package.xml file"
 
        def files = bat(
-            script: "ls force-app/main/default/classes/",
+            script: "dir force-app/main/default/classes/",
             returnStdout: true
             ).trim().split('\n')
             for (def file in files) {
