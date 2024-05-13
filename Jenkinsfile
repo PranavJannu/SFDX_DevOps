@@ -50,7 +50,7 @@ node {
 
     
     // Validate class names
-        def existingClasses = bat(script: 'dir force-app/main/default/classes/*.cls',
+        def existingClasses = bat(script: 'dir /B force-app\\main\\default\\classes\\*.cls',
         returnStdout:true).trim().split('\n').collect{ it.replaceAll(/^.*\//,'').replaceAll(/\.cls$/,'')}
 
         def missingClasses = packageClasses.findAll { className ->
