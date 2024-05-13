@@ -22,7 +22,7 @@ node {
         echo "Package.xml content: ${packageXmlContent.trim()}" //Disply files present under package.xml
         echo "Reading package.xml file"
 
-       def files = sh(
+       def files = bat(
             script: "ls force-app/main/default/classes/",
             returnStdout: true
             ).trim().split('\n')
