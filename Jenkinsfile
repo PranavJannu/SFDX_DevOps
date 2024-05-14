@@ -32,7 +32,7 @@ node {
             echo fileName
         }
     
-    // Extract class names from package.xml, excluding wildcard entries
+        // Extract class names from package.xml, excluding wildcard entries
         def packageClasses = packageXmlContent.readLines().findAll { line ->
             line.contains('<members>') && line.contains('</members>') && !line.contains('<members>*</members>')
         }.collect { line ->
@@ -44,15 +44,10 @@ node {
             echo className
         }
 
-    // Convert class names and file names to lowercase for case-insensitive comparison
-        def lowercasePackageClasses = packageClasses.collect { it.toLowerCase() }
-        def lowercaseClassesFiles = classesFiles.collect { it.toLowerCase() }
-
+        // Extract existing class names from files    
+        def existingClasses = classesFiles.collect { it.replaceAll(/^.*\//, '').replaceAll(/\.cls$/, '') }
     
-    // Validate class names
-        def existingClasses = bat(script: 'dir /B force-app\\main\\default\\classes\\*.cls',
-        returnStdout:true).trim().split('\n').collect{ it.replaceAll(/^.*\//,'').replaceAll(/\.cls$/,'')}
-
+        // Find missing classes
         def missingClasses = packageClasses.findAll { className ->
             !(className in existingClasses)
         }
