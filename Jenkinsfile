@@ -1,5 +1,7 @@
-import groovy.json.JsonSlurperClassic
-node {
+Pipeline{
+    agent any
+
+environmnet {
     def BUILD_NUMBER=env.BUILD_NUMBER
     def RUN_ARTIFACT_DIR="tests/${BUILD_NUMBER}"
     def SFDC_USERNAME
@@ -10,6 +12,7 @@ node {
     def CONNECTED_APP_CONSUMER_KEY=env.CONNECTED_APP_CONSUMER_KEY_DH
 
     def toolbelt = tool 'toolbelt'
+}
      stages
     {
         stage('Authorization')
@@ -17,8 +20,6 @@ node {
             env.PATH += "C:/Program Files/sf/bin/sfdx"
             sh "${toolbelt} force:auth:jwt:grant --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile ${jwt_key_file} --setdefaultdevhubusername --instanceurl ${SFDC_HOST}"
         }
-    }
-    
-    
-   
+    } 
+}
 }
