@@ -14,7 +14,7 @@ node {
     {
         stage('Authorization')
         {
-            env.PATH += "C:\Program Files\sf\bin\sfdx"
+            env.PATH += "C:/Program Files/sf/bin/sfdx"
             sh "${toolbelt} force:auth:jwt:grant --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile ${jwt_key_file} --setdefaultdevhubusername --instanceurl ${SFDC_HOST}"
         }
     }
