@@ -10,14 +10,15 @@ node {
     def CONNECTED_APP_CONSUMER_KEY=env.CONNECTED_APP_CONSUMER_KEY_DH
 
     def toolbelt = tool 'toolbelt'
-
-    env.PATH += "C:\Program Files\sf\bin\sfdx"
-    stages
+     stages
     {
         stage('Authorization')
         {
+            env.PATH += "C:\Program Files\sf\bin\sfdx"
             sh "${toolbelt} force:auth:jwt:grant --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile ${jwt_key_file} --setdefaultdevhubusername --instanceurl ${SFDC_HOST}"
         }
     }
     
+    
+   
 }
