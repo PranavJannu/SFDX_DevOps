@@ -29,7 +29,7 @@ node {
         // Output the files present in the classes directory
         echo "Files in ${classesDir}:"
         classesFiles.each { fileName ->
-            echo * fileName
+            echo " * "fileName
         }
     
         // Extract class names from package.xml, excluding wildcard entries
